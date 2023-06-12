@@ -9,7 +9,7 @@ export class TodoList {
     #todos: TodoItem[];
 
     constructor(title: string) {
-        this.#id = new Date().valueOf(); // Generate a unique ID
+        this.#id = new Date().valueOf() + Math.floor(Math.random() * 1000); // Generate a unique ID
         this.#title = title;
         this.#todos = [];
     }

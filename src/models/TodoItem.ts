@@ -9,7 +9,7 @@ export class TodoItem {
     #dueDate: Date;
 
     constructor(title: string, description: string, dueDate: Date) {
-        this.#id = new Date().valueOf(); // Generate a unique ID
+        this.#id = new Date().valueOf() + Math.floor(Math.random() * 1000); // Generate a unique ID
         this.#title = title;
         this.#status = false;
         this.#description = description;
