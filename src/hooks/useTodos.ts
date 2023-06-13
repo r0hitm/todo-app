@@ -1,7 +1,7 @@
 /**
  * Custom hook to manage the todo lists
  */
-import { useReducer } from "react";
+import { useReducer, useState } from "react";
 import { TodoList } from "../models/TodoList";
 
 type TodoListAction =
@@ -38,7 +38,11 @@ const reducer = (state: TodoList[], action: TodoListAction): TodoList[] => {
             return [...state, new TodoList(action.title)];
         }
         case "removeTodoList": {
-            return state.filter(todoList => todoList.id !== action.id);
+            return state.filter(
+                todoList =>
+                    todoList.id !== action.id ||
+                    (todoList.id === action.id && todoList.title !== "Default")
+            );
         }
         case "addTodoItem": {
             return state.map(todoList => {
@@ -117,6 +121,17 @@ const reducer = (state: TodoList[], action: TodoListAction): TodoList[] => {
 
 export const useTodos = () => {
     const [todos, dispatch] = useReducer(reducer, [new TodoList("Default")]);
+    const [currentList, setCurrentList] = useState<number>(todos[0].id); // ID of the current list
+
+    const getCurrentList = () =>
+        todos.find(todoList => todoList.id === currentList);
+    const changeCurrentList = (id: number) => {
+        if (todos.find(todoList => todoList.id === id)) {
+            setCurrentList(id);
+        } else {
+            throw new Error("Invalid list ID");
+        }
+    };
 
     // Action handlers
     const handleNewList = (title: string) => {
@@ -174,6 +189,8 @@ export const useTodos = () => {
 
     return {
         todos,
+        getCurrentList,
+        changeCurrentList,
         handleNewList,
         handleRemoveList,
         handleNewTodoItem,
