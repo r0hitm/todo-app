@@ -8,10 +8,17 @@ export class List {
     #name: string;
     #todos: TodoItem[];
 
-    constructor(name: string) {
-        this.#id = new Date().valueOf() + Math.floor(Math.random() * 1000); // Generate a unique ID
-        this.#name = name;
-        this.#todos = [];
+    // Creates a new list with a unique ID or copy of an existing list
+    constructor(name: string | List) {
+        if (typeof name === "string") {
+            this.#id = new Date().valueOf() + Math.floor(Math.random() * 1000); // Generate a unique ID
+            this.#name = name;
+            this.#todos = [];
+        } else {
+            this.#id = name.id;
+            this.#name = name.name;
+            this.#todos = [...name.todos];
+        }
     }
 
     // Getters and setters:
@@ -41,7 +48,11 @@ export class List {
      * @param dueDate Due date of the todo item
      * @returns The todo item that was added
      */
-    addTodoItem(title: string, description: string, dueDate: Date = new Date()): TodoItem {
+    addTodoItem(
+        title: string,
+        description: string,
+        dueDate: Date = new Date()
+    ): TodoItem {
         const todoItem = new TodoItem(title, description, dueDate);
         this.#todos.push(todoItem);
         return todoItem;
