@@ -1,8 +1,8 @@
-import { useState, createContext } from "react";
+import { useState, createContext, useEffect } from "react";
 import { useTodos } from "./hooks/useTodos";
 import { TodoList } from "./models/TodoList";
 import ListNav from "./components/ListNav";
-// import ActiveListContext from "./ActiveListContext";
+import ListTasks from "./components/ListTasks";
 
 import "./App.css";
 
@@ -26,13 +26,15 @@ function App() {
     );
 
     return (
+        <>
             <ListNav
                 activeList={activeList}
                 // renameList={handleEditTodoListTitle}
                 // deleteList={handleRemoveList}
                 // changeList={changeCurrentList}
             />
-            // TODO
+            <ListTasks activeList={activeList} />
+        </>
     );
 }
 

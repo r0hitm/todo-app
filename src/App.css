@@ -28,3 +28,65 @@ a.icon-button {
     place-content: center;
     font-size: 1.6rem;
 }
+
+/* List Tasks */
+.list-items {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin: 1rem 0;
+}
+
+.todo-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 0.5rem 1.6rem;
+    border-radius: 0.5rem;
+    margin: 0.5rem 0;
+}
+
+.todo-item:hover {
+    background-color: #eee;
+}
+
+.todo-item .check-box-wrapper {
+    display: flex;
+    place-content: center;
+}
+
+.todo-item .check-box-wrapper input[type="checkbox"] {
+    width: 1.6rem;
+    height: 1.6rem;
+}
+
+.todo-item .check-box-wrapper input[type="checkbox"]:checked {
+    background-color: var(--bocchi-pink);
+}
+
+.todo-item .todo-details {
+    flex: 2 1 0;
+    margin-left: 2rem;
+}
+
+.todo-item .todo-title {
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+.todo-item .todo-desc {
+    font-size: 1rem;
+    font-weight: 300;
+}
+
+/* TODO: Due Date Styles */
+
+.add-task {
+    color: var(--bocchi-pink);
+    font-size: 4rem;
+    position: fixed;
+    bottom: 4rem;
+    right: 3rem;
+}

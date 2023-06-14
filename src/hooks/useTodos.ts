@@ -125,6 +125,7 @@ export const useTodos = () => {
 
     const getCurrentList = () =>
         todos.find(todoList => todoList.id === currentList);
+
     const changeCurrentList = (id: number) => {
         if (todos.find(todoList => todoList.id === id)) {
             setCurrentList(id);
@@ -143,11 +144,14 @@ export const useTodos = () => {
     };
 
     const handleNewTodoItem = (
-        id: number,
+        id: number | undefined,
         title: string,
         description: string,
         dueDate: Date
     ) => {
+        if (!id) {
+            throw new Error("Invalid list ID");
+        }
         dispatch({ type: "addTodoItem", id, title, description, dueDate });
     };
 
