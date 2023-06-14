@@ -62,11 +62,13 @@ const reducer = (state: List[], action: TodoListAction): List[] => {
         case "addTask": {
             return state.map(todoList => {
                 if (todoList.id === action.listId) {
-                    todoList.addTodoItem(
+                    const updatedList = new List(todoList); // make a copy
+                    updatedList.addTodoItem(
                         action.title,
                         action.description,
                         action.dueDate
                     );
+                    return updatedList;
                 }
                 return todoList;
             });
@@ -125,7 +127,12 @@ const reducer = (state: List[], action: TodoListAction): List[] => {
 };
 
 export const useTodos = () => {
-    const [lists, dispatch] = useReducer(reducer, [new List("Default"), new List("Shopping"), new List("Work"), new List("School")]);
+    const [lists, dispatch] = useReducer(reducer, [
+        new List("Personal"),
+        new List("Work"),
+        new List("School"),
+        new List("Shopping"),
+    ]);
     const [activeListId, setActiveListId] = useState<number>(lists[0].id); // ID of the current list
 
     /**
