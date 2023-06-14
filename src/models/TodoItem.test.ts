@@ -26,4 +26,17 @@ describe("TodoItem", () => {
         );
         expect(testTodoItem1.id).not.toBe(testTodoItem2.id);
     });
+
+    it("should toggle the complete status of the TodoItem", () => {
+        const testTodoItem = new TodoItem(
+            "Test Title",
+            "Test Description",
+            new Date()
+        );
+        expect(testTodoItem.complete).toBe(false);
+        testTodoItem.toggleComplete();
+        expect(testTodoItem.complete).toBe(true);
+        testTodoItem.toggleComplete();
+        expect(testTodoItem.complete).toBe(false);
+    });
 });
