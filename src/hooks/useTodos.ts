@@ -152,10 +152,15 @@ export const useTodos = () => {
     // Action handlers
     const add_new_list = (name: string) => {
         dispatch({ type: "addList", name });
+        setActiveListId(lists[lists.length - 1].id); // Set the new list as active
     };
 
+    // Only the current list can be removed
     const remove_list = (id: number) => {
-        dispatch({ type: "removeList", listId: id });
+        if (id === activeListId && lists.length > 1) {
+            dispatch({ type: "removeList", listId: id });
+            setActiveListId(lists[0].id);
+        }
     };
 
     const rename_list = (id: number, new_name: string) => {
