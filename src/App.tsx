@@ -1,6 +1,6 @@
-import { useState, createContext, useEffect } from "react";
+import { useState } from "react";
 import { useTodos } from "./hooks/useTodos";
-import { TodoList } from "./models/TodoList";
+// import { List } from "./models/List";
 import ListNav from "./components/ListNav";
 import ListTasks from "./components/ListTasks";
 
@@ -8,32 +8,30 @@ import "./App.css";
 
 function App() {
     const {
-        todos,
-        getCurrentList,
-        changeCurrentList,
-        handleNewList,
-        handleRemoveList,
-        handleNewTodoItem,
-        handleRemoveTodoItem,
-        handleToggleTodoItem,
-        handleEditTodoItemTitle,
-        handleEditTodoItemDescription,
-        handleEditTodoItemDueDate,
-        handleEditTodoListTitle,
+        lists,
+        get_active_list,
+        change_active_list,
+        add_new_list,
+        rename_list,
+        remove_list,
+        add_new_task,
+        remove_task,
+        toggle_task,
+        rename_task,
+        change_task_desc,
+        change_task_due_date,
     } = useTodos();
-    const [activeList, setActiveList] = useState<TodoList | undefined>(
-        getCurrentList()
-    );
 
     return (
         <>
             <ListNav
-                activeList={activeList}
-                // renameList={handleEditTodoListTitle}
-                // deleteList={handleRemoveList}
-                // changeList={changeCurrentList}
+                activeList={get_active_list()}
+                lists={lists}
+                changeActiveList={change_active_list}
+                renameList={rename_list}
+                deleteList={remove_list}
             />
-            <ListTasks activeList={activeList} />
+            <ListTasks activeList={get_active_list()} />
         </>
     );
 }
