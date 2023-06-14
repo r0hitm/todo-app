@@ -2,7 +2,7 @@ import { useState, createContext } from "react";
 import { useTodos } from "./hooks/useTodos";
 import { TodoList } from "./models/TodoList";
 import ListNav from "./components/ListNav";
-import ActiveListContext from "./ActiveListContext";
+// import ActiveListContext from "./ActiveListContext";
 
 import "./App.css";
 
@@ -26,13 +26,13 @@ function App() {
     );
 
     return (
-        <ActiveListContext.Provider value={activeList}>
             <ListNav
+                activeList={activeList}
                 // renameList={handleEditTodoListTitle}
                 // deleteList={handleRemoveList}
+                // changeList={changeCurrentList}
             />
-            {/* TODO */}
-        </ActiveListContext.Provider>
+            // TODO
     );
 }
 

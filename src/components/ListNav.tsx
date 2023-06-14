@@ -1,12 +1,12 @@
-import { useContext } from "react";
-import ActiveListContext from "../ActiveListContext";
+import { TodoList } from "../models/TodoList";
+// import ActiveListContext from "../ActiveListContext";
 
 const viewAllLists = () => {
     // TODO
     console.log("TODO: Add a component to View all lists");
 };
 
-export default function ListNav() {
+export default function ListNav({ activeList }: { activeList: TodoList | undefined}) {
     //     {
     //     renameList,
     //     deleteList,
@@ -14,7 +14,7 @@ export default function ListNav() {
     //     renameList: (id: number, title: string) => void;
     //     deleteList: (id: number) => void;
     // }
-    const activeList = useContext(ActiveListContext);
+    // const activeList = useContext(ActiveListContext);
 
     return (
         <div className="list-nav">
