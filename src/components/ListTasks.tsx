@@ -5,11 +5,11 @@ import TodoItemView from "./TodoItemView";
 export default function ListTasks({
     activeList,
     addNewTask,
-    removeTask,
+    // removeTask,
     toggleTask,
-    renameTask,
-    changeTaskDesc,
-    changeTaskDueDate,
+    // renameTask,
+    // changeTaskDesc,
+    // changeTaskDueDate,
     viewingAllLists,
 }: {
     activeList: List;
