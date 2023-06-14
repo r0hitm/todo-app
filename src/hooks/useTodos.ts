@@ -166,7 +166,7 @@ export const useTodos = () => {
     const remove_list = (id: number) => {
         if (id === activeListId && lists.length > 1) {
             dispatch({ type: "removeList", listId: id });
-            setActiveListId(lists[0].id);
+            setActiveListId((lists.find(l => l.id !== id) as List).id); // Set the first list as active
         }
     };
 
