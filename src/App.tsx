@@ -32,7 +32,15 @@ function App() {
                 renameList={rename_list}
                 deleteList={remove_list}
             />
-            <ListTasks activeList={get_active_list()} />
+            <ListTasks
+                activeList={get_active_list()}
+                addNewTask={add_new_task}
+                removeTask={remove_task}
+                toggleTask={toggle_task}
+                renameTask={rename_task}
+                changeTaskDesc={change_task_desc}
+                changeTaskDueDate={change_task_due_date}
+            />
         </>
     );
 }

@@ -1,10 +1,20 @@
 import { TodoItem } from "../models/TodoItem";
 
-export default function TodoItemView({ item }: { item: TodoItem }) {
+export default function TodoItemView({
+    item,
+    toggler,
+}: {
+    item: TodoItem;
+    toggler: (todoId: number) => void;
+}) {
     return (
         <div className="todo-item">
             <div className="check-box-wrapper">
-                <input type="checkbox" checked={item.status} />
+                <input
+                    type="checkbox"
+                    checked={item.complete}
+                    onClick={() => toggler(item.id)}
+                />
             </div>
             <div className="todo-details">
                 <div className="todo-title">{item.title}</div>
