@@ -5,12 +5,14 @@ export default function ListNav({
     lists,
     activeList,
     changeActiveList,
+    addNewList,
     renameList,
     deleteList,
 }: {
     lists: List[];
     activeList: List;
     changeActiveList: (id: number) => void;
+    addNewList: (name: string) => void;
     renameList: (id: number, new_name: string) => void;
     deleteList: (id: number) => void;
 }) {
@@ -35,7 +37,12 @@ export default function ListNav({
                 </div>
                 <ul className="all-lists">
                     {lists.map(list => (
-                        <li key={list.id} className={(list.name === activeList.name) ? "active" : ""}>
+                        <li
+                            key={list.id}
+                            className={
+                                list.name === activeList.name ? "active" : ""
+                            }
+                        >
                             <a
                                 href="#"
                                 onClick={() => {
@@ -48,6 +55,29 @@ export default function ListNav({
                         </li>
                     ))}
                 </ul>
+                <form
+                    className="add-list-form"
+                    onSubmit={e => {
+                        e.preventDefault();
+                        const input = document.querySelector(
+                            "input[name=new-list]"
+                        ) as HTMLInputElement;
+                        if (input.value.trim() !== "") {
+                            addNewList(input.value);
+                            input.value = "";
+                        }
+                    }}
+                >
+                    <h3>Add New List</h3>
+                    <div className="add-list-input">
+                        <input
+                            name="new-list"
+                            type="text"
+                            placeholder="New List"
+                        />
+                        <button type="submit">Add</button>
+                    </div>
+                </form>
             </div>
         );
     } else {

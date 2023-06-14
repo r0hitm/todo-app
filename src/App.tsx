@@ -28,6 +28,7 @@ function App() {
                 activeList={get_active_list()}
                 lists={lists}
                 changeActiveList={change_active_list}
+                addNewList={add_new_list}
                 renameList={rename_list}
                 deleteList={remove_list}
             />
