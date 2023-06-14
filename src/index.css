@@ -3,9 +3,10 @@
   line-height: 1.5;
   font-weight: 400;
 
-  color-scheme: light dark;
+  color-scheme: light;
   color: #333333; /* Dark gray for text color */
   background-color: #f5f5f5; /* Light gray for background color */
+  --bocchi-pink: #f43f5e;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -34,10 +35,10 @@ body {
   min-height: 100vh;
 }
 
-h1 {
+/* h1 {
   font-size: 3.2em;
   line-height: 1.1;
-}
+} */
 
 button {
   border-radius: 8px;
@@ -51,22 +52,23 @@ button {
   transition: border-color 0.25s;
 }
 button:hover {
-  border-color: #3366cc; /* Blue for button hover border color */
+  border-color: #f43f5dcd; /* Blue for button hover border color */
 }
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+/*
 @media (prefers-color-scheme: dark) {
   :root {
-    color: #f5f5f5; /* Light gray for text color in dark mode */
-    background-color: #333333; /* Dark gray for background color in dark mode */
+    color: #f5f5f5; /* Light gray for text color in dark mode *
+    background-color: #333333; /* Dark gray for background color in dark mode *
   }
   a:hover {
-    color: #99ccff; /* Light blue for link hover color in dark mode */
+    color: #99ccff; /* Light blue for link hover color in dark mode *
   }
   button {
-    background-color: #333333; /* Dark gray for button background in dark mode */
+    background-color: #333333; /* Dark gray for button background in dark mode *
   }
-}
+} */
