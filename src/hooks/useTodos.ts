@@ -132,8 +132,8 @@ export const useTodos = () => {
      * Get the active list
      * @returns The active list
      */
-    const get_active_list = () =>
-        lists.find(todoList => todoList.id === activeListId);
+    const get_active_list = (): List =>
+        lists.find(todoList => todoList.id === activeListId) as List;
 
     /**
      * Change the active list
