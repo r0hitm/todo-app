@@ -8,6 +8,8 @@ export default function ListNav({
     addNewList,
     renameList,
     deleteList,
+    viewAllLists,
+    setViewAllLists,
 }: {
     lists: List[];
     activeList: List;
@@ -15,9 +17,10 @@ export default function ListNav({
     addNewList: (name: string) => void;
     renameList: (id: number, new_name: string) => void;
     deleteList: (id: number) => void;
+    viewAllLists: boolean;
+    setViewAllLists: (view: boolean) => void;
 }) {
     const [isRenaming, setIsRenaming] = useState(false);
-    const [viewAllLists, setViewAllLists] = useState(false);
 
     function handleListRename(newName: string) {
         newName = newName.trim();

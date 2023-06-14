@@ -21,6 +21,7 @@ function App() {
         change_task_desc,
         change_task_due_date,
     } = useTodos();
+    const [viewAllLists, setViewAllLists] = useState(false);
 
     return (
         <>
@@ -31,6 +32,8 @@ function App() {
                 addNewList={add_new_list}
                 renameList={rename_list}
                 deleteList={remove_list}
+                viewAllLists={viewAllLists}
+                setViewAllLists={setViewAllLists}
             />
             <ListTasks
                 activeList={get_active_list()}
@@ -40,6 +43,7 @@ function App() {
                 renameTask={rename_task}
                 changeTaskDesc={change_task_desc}
                 changeTaskDueDate={change_task_due_date}
+                viewingAllLists={viewAllLists}
             />
         </>
     );
