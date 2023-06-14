@@ -125,7 +125,7 @@ const reducer = (state: List[], action: TodoListAction): List[] => {
 };
 
 export const useTodos = () => {
-    const [lists, dispatch] = useReducer(reducer, [new List("Default")]);
+    const [lists, dispatch] = useReducer(reducer, [new List("Default"), new List("Shopping"), new List("Work"), new List("School")]);
     const [activeListId, setActiveListId] = useState<number>(lists[0].id); // ID of the current list
 
     /**

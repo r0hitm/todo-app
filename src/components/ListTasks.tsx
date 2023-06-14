@@ -1,10 +1,10 @@
-import { TodoList } from "../models/TodoList";
+import { List } from "../models/List";
 import TodoItemView from "./TodoItemView";
 
 export default function ListTasks({
     activeList,
 }: {
-    activeList: TodoList | undefined;
+    activeList: List | undefined;
 }) {
     return (
         <>
