@@ -3,14 +3,14 @@
  */
 import { TodoItem } from "./TodoItem";
 
-export class TodoList {
+export class List {
     #id: number;
-    #title: string;
+    #name: string;
     #todos: TodoItem[];
 
-    constructor(title: string) {
+    constructor(name: string) {
         this.#id = new Date().valueOf() + Math.floor(Math.random() * 1000); // Generate a unique ID
-        this.#title = title;
+        this.#name = name;
         this.#todos = [];
     }
 
@@ -20,17 +20,19 @@ export class TodoList {
         return this.#id;
     }
 
-    get title(): string {
-        return this.#title;
+    get name(): string {
+        return this.#name;
     }
 
-    set title(title: string) {
-        this.#title = title;
+    set name(title: string) {
+        this.#name = title;
     }
 
     get todos(): TodoItem[] {
         return this.#todos;
     }
+
+    // cannot set todos directly
 
     /**
      * Add a todo item to the list
@@ -39,7 +41,7 @@ export class TodoList {
      * @param dueDate Due date of the todo item
      * @returns The todo item that was added
      */
-    addTodoItem(title: string, description: string, dueDate: Date): TodoItem {
+    addTodoItem(title: string, description: string, dueDate: Date = new Date()): TodoItem {
         const todoItem = new TodoItem(title, description, dueDate);
         this.#todos.push(todoItem);
         return todoItem;
@@ -48,10 +50,10 @@ export class TodoList {
     /**
      * Remove a todo item from the list
      * @param id ID of the todo item to remove
-     * @returns The todo item that was removed, or undefined if no item was removed
+     * @returns The todo item that was removed, or false if no item was removed
      */
-    removeTodoItem(id: number): TodoItem | undefined {
-        let returnItem: TodoItem | undefined = undefined;
+    removeTodoItem(id: number): TodoItem | false {
+        let returnItem: TodoItem | false = false;
         this.#todos = this.#todos.filter(todoItem => {
             if (todoItem.id === id) {
                 returnItem = todoItem;
