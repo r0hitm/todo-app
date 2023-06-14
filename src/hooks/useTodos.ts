@@ -2,29 +2,39 @@
  * Custom hook to manage the todo lists
  */
 import { useReducer, useState } from "react";
-import { TodoList } from "../models/TodoList";
+import { List } from "../models/List";
 
 type TodoListAction =
-    | { type: "addTodoList"; title: string }
-    | { type: "removeTodoList"; id: number }
+    | { type: "addList"; name: string }
+    | { type: "removeList"; listId: number }
+    | { type: "renameList"; listId: number; name: string }
     | {
-          type: "addTodoItem";
-          id: number;
+          type: "addTask";
+          listId: number;
           title: string;
           description: string;
           dueDate: Date;
       }
-    | { type: "removeTodoItem"; id: number; todoId: number }
-    | { type: "toggleTodoItem"; id: number; todoId: number }
-    | { type: "editTodoItemTitle"; id: number; todoId: number; title: string }
+    | { type: "removeTask"; listId: number; todoId: number }
+    | { type: "toggleComplete"; listId: number; todoId: number }
     | {
-          type: "editTodoItemDescription";
-          id: number;
+          type: "renameTask";
+          listId: number;
+          todoId: number;
+          title: string;
+      }
+    | {
+          type: "changeTaskDescription";
+          listId: number;
           todoId: number;
           description: string;
       }
-    | { type: "editTodoItemDueDate"; id: number; todoId: number; dueDate: Date }
-    | { type: "editTodoListTitle"; id: number; title: string };
+    | {
+          type: "changeTaskDueDate";
+          listId: number;
+          todoId: number;
+          dueDate: Date;
+      };
 
 /**
  * Reducer function for the todo lists
@@ -32,21 +42,26 @@ type TodoListAction =
  * @param action Action to perform
  * @returns New state
  */
-const reducer = (state: TodoList[], action: TodoListAction): TodoList[] => {
+const reducer = (state: List[], action: TodoListAction): List[] => {
     switch (action.type) {
-        case "addTodoList": {
-            return [...state, new TodoList(action.title)];
+        case "addList": {
+            return [...state, new List(action.name)];
         }
-        case "removeTodoList": {
-            return state.filter(
-                todoList =>
-                    todoList.id !== action.id ||
-                    (todoList.id === action.id && todoList.title !== "Default")
-            );
+        case "removeList": {
+            if (state.length === 1) return state; // Don't allow removing the last list
+            return state.filter(todoList => todoList.id !== action.listId);
         }
-        case "addTodoItem": {
+        case "renameList": {
             return state.map(todoList => {
-                if (todoList.id === action.id) {
+                if (todoList.id === action.listId) {
+                    todoList.name = action.name;
+                }
+                return todoList;
+            });
+        }
+        case "addTask": {
+            return state.map(todoList => {
+                if (todoList.id === action.listId) {
                     todoList.addTodoItem(
                         action.title,
                         action.description,
@@ -56,28 +71,26 @@ const reducer = (state: TodoList[], action: TodoListAction): TodoList[] => {
                 return todoList;
             });
         }
-        case "removeTodoItem": {
+        case "removeTask": {
             return state.map(todoList => {
-                if (todoList.id === action.id) {
+                if (todoList.id === action.listId) {
                     todoList.removeTodoItem(action.todoId);
                 }
                 return todoList;
             });
         }
-        case "toggleTodoItem": {
+        case "toggleComplete": {
             return state.map(todoList => {
-                if (todoList.id === action.id) {
+                if (todoList.id === action.listId) {
                     const todoItem = todoList.getTodoItem(action.todoId);
-                    if (todoItem) {
-                        todoItem.status = !todoItem.status;
-                    }
+                    todoItem?.toggleComplete();
                 }
                 return todoList;
             });
         }
-        case "editTodoItemTitle": {
+        case "renameTask": {
             return state.map(todoList => {
-                if (todoList.id === action.id) {
+                if (todoList.id === action.listId) {
                     const todoItem = todoList.getTodoItem(action.todoId);
                     if (todoItem) {
                         todoItem.title = action.title;
@@ -86,9 +99,9 @@ const reducer = (state: TodoList[], action: TodoListAction): TodoList[] => {
                 return todoList;
             });
         }
-        case "editTodoItemDescription": {
+        case "changeTaskDescription": {
             return state.map(todoList => {
-                if (todoList.id === action.id) {
+                if (todoList.id === action.listId) {
                     const todoItem = todoList.getTodoItem(action.todoId);
                     if (todoItem) {
                         todoItem.description = action.description;
@@ -97,9 +110,9 @@ const reducer = (state: TodoList[], action: TodoListAction): TodoList[] => {
                 return todoList;
             });
         }
-        case "editTodoItemDueDate": {
+        case "changeTaskDueDate": {
             return state.map(todoList => {
-                if (todoList.id === action.id) {
+                if (todoList.id === action.listId) {
                     const todoItem = todoList.getTodoItem(action.todoId);
                     if (todoItem) {
                         todoItem.dueDate = action.dueDate;
@@ -108,101 +121,101 @@ const reducer = (state: TodoList[], action: TodoListAction): TodoList[] => {
                 return todoList;
             });
         }
-        case "editTodoListTitle": {
-            return state.map(todoList => {
-                if (todoList.id === action.id) {
-                    todoList.title = action.title;
-                }
-                return todoList;
-            });
-        }
     }
 };
 
 export const useTodos = () => {
-    const [todos, dispatch] = useReducer(reducer, [new TodoList("Default")]);
-    const [currentList, setCurrentList] = useState<number>(todos[0].id); // ID of the current list
+    const [lists, dispatch] = useReducer(reducer, [new List("Default")]);
+    const [activeListId, setActiveListId] = useState<number>(lists[0].id); // ID of the current list
 
-    const getCurrentList = () =>
-        todos.find(todoList => todoList.id === currentList);
+    /**
+     * Get the active list
+     * @returns The active list
+     */
+    const get_active_list = () =>
+        lists.find(todoList => todoList.id === activeListId);
 
-    const changeCurrentList = (id: number) => {
-        if (todos.find(todoList => todoList.id === id)) {
-            setCurrentList(id);
+    /**
+     * Change the active list
+     * @param id ID of the list to change to
+     * @throws Error if the list ID is invalid
+     * @returns void
+     */
+    const change_active_list = (id: number): void => {
+        if (lists.find(todoList => todoList.id === id)) {
+            setActiveListId(id);
         } else {
             throw new Error("Invalid list ID");
         }
     };
 
     // Action handlers
-    const handleNewList = (title: string) => {
-        dispatch({ type: "addTodoList", title });
+    const add_new_list = (name: string) => {
+        dispatch({ type: "addList", name });
     };
 
-    const handleRemoveList = (id: number) => {
-        dispatch({ type: "removeTodoList", id });
+    const remove_list = (id: number) => {
+        dispatch({ type: "removeList", listId: id });
     };
 
-    const handleNewTodoItem = (
-        id: number | undefined,
+    const rename_list = (id: number, new_name: string) => {
+        dispatch({ type: "renameList", listId: id, name: new_name });
+    };
+
+    const add_new_task = (
+        id: number,
         title: string,
         description: string,
         dueDate: Date
     ) => {
-        if (!id) {
-            throw new Error("Invalid list ID");
-        }
-        dispatch({ type: "addTodoItem", id, title, description, dueDate });
+        dispatch({ type: "addTask", listId: id, title, description, dueDate });
     };
 
-    const handleRemoveTodoItem = (id: number, todoId: number) => {
-        dispatch({ type: "removeTodoItem", id, todoId });
+    const remove_task = (id: number, todoId: number) => {
+        dispatch({ type: "removeTask", listId: id, todoId });
     };
 
-    const handleToggleTodoItem = (id: number, todoId: number) => {
-        dispatch({ type: "toggleTodoItem", id, todoId });
+    const toggle_task = (id: number, todoId: number) => {
+        dispatch({ type: "toggleComplete", listId: id, todoId });
     };
 
-    const handleEditTodoItemTitle = (
-        id: number,
-        todoId: number,
-        title: string
-    ) => {
-        dispatch({ type: "editTodoItemTitle", id, todoId, title });
+    const rename_task = (id: number, todoId: number, title: string) => {
+        dispatch({ type: "renameTask", listId: id, todoId, title });
     };
 
-    const handleEditTodoItemDescription = (
+    const change_task_desc = (
         id: number,
         todoId: number,
         description: string
     ) => {
-        dispatch({ type: "editTodoItemDescription", id, todoId, description });
+        dispatch({
+            type: "changeTaskDescription",
+            listId: id,
+            todoId,
+            description,
+        });
     };
 
-    const handleEditTodoItemDueDate = (
+    const change_task_due_date = (
         id: number,
         todoId: number,
         dueDate: Date
     ) => {
-        dispatch({ type: "editTodoItemDueDate", id, todoId, dueDate });
-    };
-
-    const handleEditTodoListTitle = (id: number, title: string) => {
-        dispatch({ type: "editTodoListTitle", id, title });
+        dispatch({ type: "changeTaskDueDate", listId: id, todoId, dueDate });
     };
 
     return {
-        todos,
-        getCurrentList,
-        changeCurrentList,
-        handleNewList,
-        handleRemoveList,
-        handleNewTodoItem,
-        handleRemoveTodoItem,
-        handleToggleTodoItem,
-        handleEditTodoItemTitle,
-        handleEditTodoItemDescription,
-        handleEditTodoItemDueDate,
-        handleEditTodoListTitle,
+        lists,
+        get_active_list,
+        change_active_list,
+        add_new_list,
+        rename_list,
+        remove_list,
+        add_new_task,
+        remove_task,
+        toggle_task,
+        rename_task,
+        change_task_desc,
+        change_task_due_date,
     };
 };
