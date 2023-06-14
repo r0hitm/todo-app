@@ -36,6 +36,8 @@ export default function ListTasks({
                 className="new-task-form"
                 onSubmit={e => {
                     e.preventDefault();
+                    setAddingTask(false);
+
                     const title = (
                         document.getElementById("title") as HTMLInputElement
                     ).value;
@@ -55,7 +57,6 @@ export default function ListTasks({
                             dueDate ? dueDate : new Date()
                         );
                     }
-                    setAddingTask(false);
                 }}
             >
                 <h3>Add New Task</h3>
@@ -85,6 +86,7 @@ export default function ListTasks({
                 <div className="list-items">
                     {activeList.todos.map(item => (
                         <TodoItemView
+                            key={item.id}
                             item={item}
                             toggler={toggle_task_handler}
                         />

@@ -12,7 +12,7 @@ export default function TodoItemView({
             <div className="check-box-wrapper">
                 <input
                     type="checkbox"
-                    checked={item.complete}
+                    defaultChecked={item.complete}
                     onClick={() => toggler(item.id)}
                 />
             </div>
