@@ -19,7 +19,9 @@ export default function TodoItemView({
             <div className="todo-details">
                 <div className="todo-title">{item.title}</div>
                 <div className="todo-desc">{item.description}</div>
-                {/* Due Date */}
+                <div className="todo-due-date">
+                    {item.dueDate.toDateString()}
+                </div>
             </div>
         </div>
     );

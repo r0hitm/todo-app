@@ -163,7 +163,10 @@ form.add-list-form .add-list-input button {
     font-weight: 300;
 }
 
-/* TODO: Due Date Styles */
+.todo-item .todo-due-date {
+    font-size: 1rem;
+    font-weight: 300;
+}
 
 .add-task {
     display: inline-block;

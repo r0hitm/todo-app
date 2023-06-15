@@ -67,7 +67,7 @@ export default function ListTasks({
                     <h3>Add New Task</h3>
                     <div className="form-group">
                         <label htmlFor="title">Title</label>
-                        <input type="text" id="title" placeholder="Title" />
+                        <input type="text" id="title" placeholder="Title" autoFocus />
                     </div>
                     <div className="form-group">
                         <label htmlFor="description">Description</label>
