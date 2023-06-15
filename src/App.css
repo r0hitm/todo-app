@@ -128,6 +128,7 @@ form.add-list-form .add-list-input button {
     padding: 0.5rem 1.6rem;
     border-radius: 0.5rem;
     margin: 0.5rem 0;
+    user-select: none;
 }
 
 .todo-item:hover {
@@ -156,11 +157,13 @@ form.add-list-form .add-list-input button {
 .todo-item .todo-title {
     font-size: 1.2rem;
     font-weight: 500;
+    cursor: pointer;
 }
 
 .todo-item .todo-desc {
     font-size: 1rem;
     font-weight: 300;
+    cursor: pointer;
 }
 
 .todo-item .todo-due-date {

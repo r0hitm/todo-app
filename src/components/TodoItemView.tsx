@@ -3,9 +3,11 @@ import { TodoItem } from "../models/TodoItem";
 export default function TodoItemView({
     item,
     toggler,
+    editHandler,
 }: {
     item: TodoItem;
     toggler: (todoId: number) => void;
+    editHandler: () => void;
 }) {
     return (
         <div className="todo-item">
@@ -17,10 +19,10 @@ export default function TodoItemView({
                 />
             </div>
             <div className="todo-details">
-                <div className="todo-title">{item.title}</div>
-                <div className="todo-desc">{item.description}</div>
+                <div className="todo-title" onClick={editHandler}>{item.title}</div>
+                <div className="todo-desc" onClick={editHandler}>{item.description}</div>
                 <div className="todo-due-date">
-                    {item.dueDate.toDateString()}
+                    {item.dueDate?.toDateString()}
                 </div>
             </div>
         </div>

@@ -6,7 +6,7 @@ export class TodoItem {
     #title: string;
     #complete: boolean;
     #description: string;
-    #dueDate: Date;
+    #dueDate: Date | null;
 
     constructor(title: string, description: string, dueDate: Date) {
         this.#id = new Date().valueOf() + Math.floor(Math.random() * 1000); // Generate a unique ID
@@ -46,11 +46,11 @@ export class TodoItem {
         this.#description = description;
     }
 
-    get dueDate(): Date {
+    get dueDate(): Date | null {
         return this.#dueDate;
     }
 
-    set dueDate(dueDate: Date) {
+    set dueDate(dueDate: Date | null) {
         this.#dueDate = dueDate;
     }
 }

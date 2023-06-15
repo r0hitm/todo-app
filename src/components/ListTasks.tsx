@@ -1,15 +1,17 @@
 import { useState } from "react";
 import { List } from "../models/List";
 import TodoItemView from "./TodoItemView";
+import TaskForm from "./TaskForm";
+import { TodoItem } from "../models/TodoItem";
 
 export default function ListTasks({
     activeList,
     addNewTask,
-    // removeTask,
+    removeTask,
     toggleTask,
-    // renameTask,
-    // changeTaskDesc,
-    // changeTaskDueDate,
+    renameTask,
+    changeTaskDesc,
+    changeTaskDueDate,
     viewingAllLists,
 }: {
     activeList: List;
@@ -23,10 +25,11 @@ export default function ListTasks({
     toggleTask: (id: number, todoId: number) => void;
     renameTask: (id: number, todoId: number, title: string) => void;
     changeTaskDesc: (id: number, todoId: number, description: string) => void;
-    changeTaskDueDate: (id: number, todoId: number, dueDate: Date) => void;
+    changeTaskDueDate: (id: number, todoId: number, dueDate: Date | null) => void;
     viewingAllLists: boolean;
 }) {
     const [addingTask, setAddingTask] = useState(false);
+    const [editingTask, setEditingTask] = useState<TodoItem | null>(null);
 
     function toggle_task_handler(todoId: number) {
         toggleTask(activeList.id, todoId);
@@ -35,9 +38,8 @@ export default function ListTasks({
     if (!viewingAllLists) {
         if (addingTask) {
             return (
-                <form
-                    className="new-task-form"
-                    onSubmit={e => {
+                <TaskForm
+                    submitHandler={e => {
                         e.preventDefault();
                         setAddingTask(false);
 
@@ -63,30 +65,61 @@ export default function ListTasks({
                             );
                         }
                     }}
-                >
-                    <h3>Add New Task</h3>
-                    <div className="form-group">
-                        <label htmlFor="title">Title</label>
-                        <input type="text" id="title" placeholder="Title" autoFocus />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="description">Description</label>
-                        <textarea id="description" placeholder="Description" />
-                    </div>
-                    <div className="form-group">
-                        <label htmlFor="due-date">Due Date</label>
-                        <input type="date" id="due-date" />
-                    </div>
-                    <div className="form-group">
-                        <button type="submit">Add</button>
-                        <button
-                            type="button"
-                            onClick={() => setAddingTask(false)}
-                        >
-                            Cancel
-                        </button>
-                    </div>
-                </form>
+                    cancelHandler={() => setAddingTask(false)}
+                />
+            );
+        } else if (editingTask) {
+            return (
+                <TaskForm
+                    submitHandler={e => {
+                        e.preventDefault();
+                        setEditingTask(null);
+
+                        const title = (
+                            document.getElementById("title") as HTMLInputElement
+                        ).value.trim();
+                        const description = (
+                            document.getElementById(
+                                "description"
+                            ) as HTMLInputElement
+                        ).value.trim();
+                        const dueDate = (
+                            document.getElementById(
+                                "due-date"
+                            ) as HTMLInputElement
+                        ).valueAsDate;
+
+                        title &&
+                            renameTask(activeList.id, editingTask.id, title);
+                        description
+                            ? changeTaskDesc(
+                                  activeList.id,
+                                  editingTask.id,
+                                  description
+                              )
+                            : changeTaskDesc(activeList.id, editingTask.id, "");
+                        dueDate
+                            ? changeTaskDueDate(
+                                  activeList.id,
+                                  editingTask.id,
+                                  dueDate
+                              )
+                            : changeTaskDueDate(
+                                  activeList.id,
+                                  editingTask.id,
+                                  null
+                              );
+                    }}
+                    cancelHandler={() => setEditingTask(null)}
+                    defaultValues={{
+                        title: editingTask?.title,
+                        description: editingTask?.description,
+                    }}
+                    deleteTask={() => {
+                        removeTask(activeList.id, editingTask.id);
+                        setEditingTask(null);
+                    }}
+                />
             );
         } else {
             return (
@@ -97,6 +130,7 @@ export default function ListTasks({
                                 key={item.id}
                                 item={item}
                                 toggler={toggle_task_handler}
+                                editHandler={() => setEditingTask(item)}
                             />
                         ))}
                     </div>
