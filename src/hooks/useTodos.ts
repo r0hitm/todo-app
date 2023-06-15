@@ -33,7 +33,7 @@ type TodoListAction =
           type: "changeTaskDueDate";
           listId: number;
           todoId: number;
-          dueDate: Date;
+          dueDate: Date | null;
       };
 
 /**
@@ -211,7 +211,7 @@ export const useTodos = () => {
     const change_task_due_date = (
         id: number,
         todoId: number,
-        dueDate: Date
+        dueDate: Date | null
     ) => {
         dispatch({ type: "changeTaskDueDate", listId: id, todoId, dueDate });
     };
