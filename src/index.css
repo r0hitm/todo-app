@@ -92,8 +92,52 @@ button:focus-visible {
 nav.lists {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
+  overflow-y: scroll;
+  font-size: 1.5rem;
+}
+
+nav.lists h3 {
+  width: 100%;
+  margin-bottom: 1rem;
+  font-size: 2.4rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+nav.lists ul {
+  width: 100%;
+  list-style: none;
+}
+
+nav.lists ul li {
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  transition: all 0.3s ease-in;
+}
+
+.add-list {
+  text-align: center;
+}
+
+.add-list-form {
+  display: flex;
+  justify-content: center;
+}
+
+.add-list-form input {
+  border: 1px solid var(--bocchi-pink-dark);
+  border-radius: 8px;
+}
+
+.add-list-form button {
+  border: 1px solid var(--bocchi-pink-dark);
+  background-color: var(--bocchi-pink);
+  border-radius: 8px;
+  margin-left: 0.5rem;
+  color: white;
 }
 
 .hamburger {
