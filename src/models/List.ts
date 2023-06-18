@@ -1,5 +1,6 @@
 /**
- * Logic for a todo list
+ * Model for a List
+ * List of TodoItem objects
  */
 import { TodoItem } from "./TodoItem";
 

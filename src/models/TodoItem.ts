@@ -1,5 +1,6 @@
 /**
- * Logic for a todo item
+ * Model for a TodoItem
+ * Represents a single todo item in a list
  */
 export class TodoItem {
     #id: number;
