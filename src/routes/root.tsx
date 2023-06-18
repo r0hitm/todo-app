@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { NavLink, Outlet } from "react-router-dom";
-import { useTodos } from "../hooks/useTodos";
+import { init, get_lists, get_current_list } from "../storage";
 
 /**
  * Root route, the default route for the application.
@@ -9,17 +9,30 @@ import { useTodos } from "../hooks/useTodos";
  */
 export default function Root() {
     const [toggleListNav, setToggleListNav] = useState(false);
-    const todos = useTodos();
+    const [isInitialized, setIsInitialized] = useState(false);
+
+    useEffect(() => {
+        if (!isInitialized) {
+            init()
+                .then(() => {
+                    setIsInitialized(true);
+                })
+                .catch(error => {
+                    console.error("Error initializing storage:", error);
+                });
+        }
+    }, [isInitialized]);
 
     return (
         <>
             <div className={toggleListNav ? "lists-nav hidden" : "lists-nav"}>
                 <nav className="lists">
-                    {todos.lists.map(list => (
-                        <NavLink to={`/list/${list.id}`} key={list.id}>
-                            {list.name}
-                        </NavLink>
-                    ))}
+                    {isInitialized &&
+                        get_lists().map(list => (
+                            <NavLink to={`/list/${list.id}`} key={list.id}>
+                                {list.name}
+                            </NavLink>
+                        ))}
                 </nav>
                 <div className="add-list">
                     {/* <NavLink to="/list/new">Add List</NavLink> */}
@@ -38,10 +51,10 @@ export default function Root() {
                     >
                         format_list_bulleted
                     </span>
-                    <h1>{todos.get_active_list().name}</h1>
+                    {isInitialized && <h1>{get_current_list().name}</h1>}
                     {/* <span>Edit</span> */}
                 </header>
-                <Outlet context={todos} />
+                <Outlet />
                 <div className="attributions">
                     <a
                         target="_blank"
