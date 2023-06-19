@@ -9,8 +9,6 @@ import { List } from "./models/List";
 
 const STORAGE_KEY = "todo-lists";
 
-let todoLists: TodoLists | null = null;
-
 // Helper functions:
 /**
  * A helper function to set the data in the local storage.
@@ -24,72 +22,70 @@ const set = (todo_lists: TodoLists) => {
 
 // Main functions:
 /**
- * Initialize or retrieve the lists from the local storage
- * To be replaced with firebase storage later
+ * Retrieve the data from the local storage or create a new TodoList object if no data is found.
+ * @returns The TodoLists object
  */
-export async function init(): Promise<void> {
+export async function getData(): Promise<TodoLists> {
+    let todo_lists = null;
     const storedData = await localForage.getItem<{
         lists: List[];
         currentListId: number;
     }>(STORAGE_KEY);
 
     if (storedData === null) {
-        todoLists = new TodoLists(null);
+        todo_lists = new TodoLists(null);
+        await set(todo_lists);
     } else {
-        todoLists = new TodoLists(storedData.lists);
-        todoLists.currentListId = storedData.currentListId;
+        todo_lists = new TodoLists(storedData.lists);
+        todo_lists.currentListId = storedData.currentListId;
     }
-
-    await set(todoLists);
+    return todo_lists;
 }
 
-// After init(), functions below can be used:
 /**
  * Get the current list
- * @returns The current list
+ * @returns The List object
  */
-export const get_current_list = (): List => {
-    if (todoLists === null) {
-        throw new Error("Todo lists not initialized");
-    }
-    return todoLists.currentList;
+export const get_current_list = async (): Promise<List> => {
+    const list = (await getData()).currentList;
+    return list;
 };
 
 /**
  * Get all the lists
  * @returns All the lists
  */
-export const get_lists = (): List[] => {
-    if (todoLists === null) {
-        throw new Error("Todo lists not initialized");
-    }
-    return todoLists.lists;
+export const get_lists = async (): Promise<List[]> => {
+    return getData().then(todo_lists => todo_lists.lists);
 };
 
 /**
  * Add a new list
+ * Note: It is responsibility of the caller to make sure that the name is not empty
  * @param name The name of the new list
  * @returns The new list
  */
 export async function add_list(name: string): Promise<List> {
-    if (todoLists === null) {
-        throw new Error("Todo lists not initialized");
-    }
-    todoLists.add_list(name);
-    await set(todoLists);
-    return todoLists.currentList;
+    const todo_lists = await getData();
+    todo_lists.add_list(name);
+    await set(todo_lists);
+    return todo_lists.currentList;
 }
 
 /**
  * Delete a list
  * @param id The ID of the list to delete
+ * @returns The new current list after deletion
  */
-export async function delete_list(id: number): Promise<void> {
-    if (todoLists === null) {
-        throw new Error("Todo lists not initialized");
+export async function delete_list(id: number): Promise<List> {
+    const todo_lists = await getData();
+    try {
+        todo_lists.delete_list(id);
+    } catch (error) {
+        console.error(error);
     }
-    todoLists.delete_list(id);
-    await set(todoLists);
+    await set(todo_lists);
+    return todo_lists.currentList;
 }
 
 /**
@@ -98,11 +94,9 @@ export async function delete_list(id: number): Promise<void> {
  * @param name The new name of the list
  */
 export async function rename_list(id: number, name: string): Promise<void> {
-    if (todoLists === null) {
-        throw new Error("Todo lists not initialized");
-    }
-    todoLists.rename_list(id, name);
-    await set(todoLists);
+    const todo_lists = await getData();
+    todo_lists.rename_list(id, name);
+    await set(todo_lists);
 }
 
 /**
@@ -117,11 +111,9 @@ export async function add_todo_item(
     description: string,
     due_date: Date
 ): Promise<void> {
-    if (todoLists === null) {
-        throw new Error("Todo lists not initialized");
-    }
-    todoLists.currentList.addTodoItem(name, description, due_date);
-    await set(todoLists);
+    const todo_lists = await getData();
+    todo_lists.currentList.addTodoItem(name, description, due_date);
+    await set(todo_lists);
 }
 
 /**
@@ -129,11 +121,9 @@ export async function add_todo_item(
  * @param id The ID of the todo item to delete
  */
 export async function delete_todo_item(id: number): Promise<void> {
-    if (todoLists === null) {
-        throw new Error("Todo lists not initialized");
-    }
-    todoLists.currentList.removeTodoItem(id);
-    await set(todoLists);
+    const todo_lists = await getData();
+    todo_lists.currentList.removeTodoItem(id);
+    await set(todo_lists);
 }
 
 /**
@@ -141,15 +131,9 @@ export async function delete_todo_item(id: number): Promise<void> {
  * @param id The ID of the todo item to toggle
  */
 export async function toggle_todo_item(id: number): Promise<void> {
-    if (todoLists === null) {
-        throw new Error("Todo lists not initialized");
-    }
-    todoLists.currentList.todos.forEach(todo => {
-        if (todo.id === id) {
-            todo.toggleComplete();
-        }
-    });
-    await set(todoLists);
+    const todo_lists = await getData();
+    todo_lists.currentList.todos.find(todo => todo.id === id)?.toggleComplete();
+    await set(todo_lists);
 }
 
 /**
@@ -165,15 +149,12 @@ export async function update_todo_item(
     description: string,
     due_date: Date
 ): Promise<void> {
-    if (todoLists === null) {
-        throw new Error("Todo lists not initialized");
+    const todo_lists = await getData();
+    const todo_item = todo_lists.currentList.todos.find(todo => todo.id === id);
+    if (todo_item) {
+        todo_item.title = name;
+        todo_item.description = description;
+        todo_item.dueDate = due_date;
     }
-    todoLists.currentList.todos.forEach(todo => {
-        if (todo.id === id) {
-            todo.title = name;
-            todo.description = description;
-            todo.dueDate = due_date;
-        }
-    });
-    await set(todoLists);
+    await set(todo_lists);
 }
