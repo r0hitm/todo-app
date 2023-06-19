@@ -8,17 +8,20 @@ export class TodoLists {
     #lists: List[];
     #currentListId: number;
 
-    constructor(lists: List[] | null) {
-        if (lists === null) {
-            this.#lists = [
-                new List("Personal"),
-                new List("Work"),
-                new List("School"),
-                new List("Shopping"),
-            ];
-        } else {
-            this.#lists = lists;
+    constructor(list: List[] | null) {
+        if (list) {
+            console.log("Loading lists from argument");
+            this.#lists = list;
+            this.#currentListId = list[0].id;
+            return;
         }
+        console.log("Creating new lists");
+        this.#lists = [
+            new List("Personal"),
+            new List("Work"),
+            new List("School"),
+            new List("Shopping"),
+        ];
         this.#currentListId = this.#lists[0].id;
     }
 
@@ -32,6 +35,9 @@ export class TodoLists {
     }
 
     set currentListId(id: number) {
+        console.log({ id, lists: this.#lists });
+        this.#lists.forEach(list => console.log(list));
+
         if (!this.#lists.some(list => list.id === id)) {
             throw new Error(`List with ID ${id} does not exist`);
         }
