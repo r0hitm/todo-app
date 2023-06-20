@@ -47,6 +47,8 @@ function App() {
                     changeList={changeList}
                     addList={addList}
                     closePanel={() => setToggleListNav(false)}
+                    deleteList={deleteList}
+                    renameList={renameList}
                 />
             </div>
             <TasksView
