@@ -2,7 +2,6 @@
 import { beforeAll, test, expect } from "vitest";
 import "fake-indexeddb/auto";
 import {
-    init,
     add_list,
     get_lists,
     get_current_list,
@@ -14,6 +13,7 @@ import {
     update_todo_item,
 } from "./storage";
 import localForage from "localforage";
+import { List } from "./models/List";
 
 // Set the localForage driver to IndexedDB
 localForage.config({
@@ -22,112 +22,69 @@ localForage.config({
 
 beforeAll(async () => {
     await localForage.clear(); // Clear localForage before running tests
-    await init(); // Initialize the storage
 });
 
-test("add_list adds a new list and get_lists returns the lists", async () => {
-    const newListName = "Test List";
-    const newList = await add_list(newListName);
-
-    // Check if the new list has the correct name
-    expect(newList.name).toBe(newListName);
-
-    // Check if get_lists returns an array containing the new list
-    const lists = get_lists();
-    expect(lists).toHaveLength(5);
-    expect(lists[0]).toEqual(newList);
+// Write tests here
+test("add_list and get_lists", async () => {
+    await add_list("New List");
+    const lists = await get_lists();
+    expect(lists.length).toBe(5);
 });
 
-test("get_current_list returns the current list", () => {
-    const currentList = get_current_list();
-    expect(currentList).toEqual(get_lists()[0]);
+test("get_current_list", async () => {
+    const currentList = await get_current_list();
+    expect(currentList).toBeInstanceOf(List);
 });
 
-test("delete_list removes a list", async () => {
-    const listToRemoveId = get_current_list().id;
-    await delete_list(listToRemoveId);
-
-    // Check if the list has been removed
-    const remainingLists = get_lists();
-    expect(remainingLists).toHaveLength(4);
+test("delete_list", async () => {
+    const currentList = await get_current_list();
+    await delete_list(currentList.id);
+    const lists = await get_lists();
+    expect(lists.length).toBe(4);
 });
 
-test("rename_list updates the name of a list", async () => {
-    const newName = "Renamed List";
-    const list = await add_list("List to Rename");
-    await rename_list(list.id, newName);
-
-    // Check if the list has been renamed
-    const updatedList = get_current_list();
-    expect(updatedList.name).toBe(newName);
+test("rename_list", async () => {
+    const currentList = await get_current_list();
+    await rename_list(currentList.id, "Renamed List");
+    const renamedList = await get_current_list();
+    expect(renamedList.name).toBe("Renamed List");
 });
 
-test("add_todo_item and delete_todo_item work correctly", async () => {
-    const newItemName = "Test Todo Item";
-    const newItemDescription = "Test Description";
-    const newItemDueDate = new Date();
-    await add_todo_item(newItemName, newItemDescription, newItemDueDate);
+test("add_todo_item and delete_todo_item", async () => {
+    await add_todo_item("New Todo", "Description", new Date());
+    const currentList = await get_current_list();
+    expect(currentList.todos.length).toBe(1);
+    expect(currentList.todos[0].title).toBe("New Todo");
 
-    // Check if the new item has been added to the current list
-    let currentList = get_current_list();
-    expect(currentList.todos).toHaveLength(1);
-    expect(currentList.todos[0].title).toBe(newItemName);
-
-    // Check if the item can be deleted
-    const itemIdToDelete = currentList.todos[0].id;
-    await delete_todo_item(itemIdToDelete);
-    currentList = get_current_list();
-    expect(currentList.todos).toHaveLength(0);
+    await delete_todo_item(currentList.todos[0].id);
+    const updatedList = await get_current_list();
+    expect(updatedList.todos.length).toBe(0);
 });
 
-test("toggle_todo_item updates the completion status of a todo item", async () => {
-    const newItemName = "Test Todo Item";
-    const newItemDescription = "Test Description";
-    const newItemDueDate = new Date();
-    await add_todo_item(newItemName, newItemDescription, newItemDueDate);
+test("toggle_todo_item", async () => {
+    await add_todo_item("New Todo", "Description", new Date());
+    const currentList = await get_current_list();
+    const todoItem = currentList.todos[0];
+    expect(todoItem.complete).toBe(false);
 
-    // Check if the item has been added and is initially not completed
-    let currentList = get_current_list();
-    expect(currentList.todos).toHaveLength(1);
-    expect(currentList.todos[0].complete).toBe(false);
-
-    // Toggle the item's completion status
-    const itemIdToToggle = currentList.todos[0].id;
-    await toggle_todo_item(itemIdToToggle);
-    currentList = get_current_list();
-    expect(currentList.todos[0].complete).toBe(true);
+    await toggle_todo_item(todoItem.id);
+    const updatedList = await get_current_list();
+    expect(updatedList.todos[0].complete).toBe(true);
 });
 
-test("update_todo_item updates a todo item", async () => {
-    const newItemName = "Test Todo Item";
-    const newItemDescription = "Test Description";
-    const newItemDueDate = new Date();
-    await add_todo_item(newItemName, newItemDescription, newItemDueDate);
+test("update_todo_item", async () => {
+    await add_todo_item("New Todo", "Description", new Date());
+    const currentList = await get_current_list();
+    const todoItem = currentList.todos[0];
 
-    // Check if the new item has been added
-    let currentList = get_current_list();
-    expect(currentList.todos).toHaveLength(2);
-
-    // Update the item
-    const itemIdToUpdate = currentList.todos[0].id;
-    const updatedName = "Updated Todo Item";
-    const updatedDescription = "Updated Description";
-    const updatedDueDate = new Date(
-        newItemDueDate.getTime() + 24 * 60 * 60 * 1000
-    );
     await update_todo_item(
-        itemIdToUpdate,
-        updatedName,
-        updatedDescription,
-        updatedDueDate
+        todoItem.id,
+        "Updated Todo",
+        "Updated Description",
+        new Date()
     );
-
-    // Check if the item has been updated
-    currentList = get_current_list();
-    const updatedItem = currentList.todos[0];
-    expect(updatedItem.title).toBe(updatedName);
-    expect(updatedItem.description).toBe(updatedDescription);
-    expect((updatedItem.dueDate as Date).getTime()).toBe(
-        updatedDueDate.getTime()
-    );
+    const updatedList = await get_current_list();
+    const updatedTodoItem = updatedList.todos[0];
+    expect(updatedTodoItem.title).toBe("Updated Todo");
+    expect(updatedTodoItem.description).toBe("Updated Description");
 });

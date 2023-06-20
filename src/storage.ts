@@ -13,11 +13,8 @@ const STORAGE_KEY = "todo-lists";
 /**
  * A helper function to set the data in the local storage.
  */
-const set = (todo_lists: TodoLists) => {
-    return localForage.setItem(STORAGE_KEY, {
-        lists: todo_lists.lists,
-        currentListId: todo_lists.currentListId,
-    });
+const set = async (todo_lists: TodoLists) => {
+    return localForage.setItem(STORAGE_KEY, todo_lists.serialize());
 };
 
 // Main functions:
@@ -26,20 +23,14 @@ const set = (todo_lists: TodoLists) => {
  * @returns The TodoLists object
  */
 export async function getData(): Promise<TodoLists> {
-    let todo_lists = null;
-    const storedData = await localForage.getItem<{
-        lists: List[];
-        currentListId: number;
-    }>(STORAGE_KEY);
-
-    if (storedData === null) {
-        todo_lists = new TodoLists(null);
-        await set(todo_lists);
+    const data = await localForage.getItem<string>(STORAGE_KEY);
+    if (data) {
+        return TodoLists.deserialize(data);
     } else {
-        todo_lists = new TodoLists(storedData.lists);
-        todo_lists.currentListId = storedData.currentListId;
+        const todo_lists = new TodoLists(null);
+        await set(todo_lists);
+        return todo_lists;
     }
-    return todo_lists;
 }
 
 /**
