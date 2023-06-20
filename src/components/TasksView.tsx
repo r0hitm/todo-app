@@ -85,19 +85,6 @@ export default function TasksView({
                 >
                     <span className="material-symbols-rounded">add</span>
                 </button>
-                <div className="attributions">
-                    <a
-                        target="_blank"
-                        href="https://icons8.com/icon/tIUSbVurTTrH/todo-list"
-                    >
-                        Todo
-                    </a>{" "}
-                    icon by{" "}
-                    <a target="_blank" href="https://icons8.com">
-                        Icons8
-                    </a>
-                    b
-                </div>
             </div>
         </div>
     );

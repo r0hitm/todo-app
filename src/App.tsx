@@ -40,7 +40,13 @@ function App() {
             >
                 format_list_bulleted
             </span>
-            <div className={toggleListNav ? "lists-view-container show" : "lists-view-container"}>
+            <div
+                className={
+                    toggleListNav
+                        ? "lists-view-container show"
+                        : "lists-view-container"
+                }
+            >
                 <ListsSidePanel
                     lists={data?.lists as List[]}
                     currentList={data?.currentList as List}
@@ -58,6 +64,28 @@ function App() {
                 deleteTodoItem={deleteTodoItem}
                 updateTodoItem={updateTodoItem}
             />
+            <div className="attributions">
+                <p>
+                    Made by{" "}
+                    <a href="https://github.com/r0hitm">Rohit Mehta</a>
+                </p>
+                <p>
+                    View on{" "}
+                    <a href="https://github.com/r0hitm/todo-app">Github</a>
+                </p>
+                <p>
+                    <a
+                        target="_blank"
+                        href="https://icons8.com/icon/tIUSbVurTTrH/todo-list"
+                    >
+                        Todo Icon
+                    </a>{" "}
+                    by{" "}
+                    <a target="_blank" href="https://icons8.com">
+                        Icons8
+                    </a>
+                </p>
+            </div>
         </div>
     );
 }
