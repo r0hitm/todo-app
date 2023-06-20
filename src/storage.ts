@@ -91,6 +91,16 @@ export async function rename_list(id: number, name: string): Promise<void> {
 }
 
 /**
+ * Change the current list
+ * @param id The ID of the list to set as current
+ */
+export async function change_list(id: number): Promise<void> {
+    const todo_lists = await getData();
+    todo_lists.currentListId = id;
+    await set(todo_lists);
+}
+
+/**
  * Add a new todo item to the current list
  * @param name The name of the new todo item
  * @param description The description of the new todo item
