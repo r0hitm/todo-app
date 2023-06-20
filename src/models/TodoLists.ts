@@ -10,12 +10,12 @@ export class TodoLists {
 
     constructor(list: List[] | null) {
         if (list) {
-            console.log("Loading lists from argument");
+            // console.log("Loading lists from argument");
             this.#lists = list;
             this.#currentListId = list[0].id;
             return;
         }
-        console.log("Creating new lists");
+        // console.log("Creating new lists");
         this.#lists = [
             new List("Personal"),
             new List("Work"),
@@ -35,7 +35,7 @@ export class TodoLists {
     }
 
     set currentListId(id: number) {
-        console.log({ id, lists: this.#lists });
+        // console.log({ id, lists: this.#lists });
 
         if (!this.#lists.some(list => list.id === id)) {
             throw new Error(`List with ID ${id} does not exist`);

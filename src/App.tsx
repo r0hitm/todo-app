@@ -5,7 +5,6 @@ import ListsSidePanel from "./components/ListsSidePanel";
 import TasksView from "./components/TasksView";
 
 import { List } from "./models/List";
-// import "./App.css";
 
 function App() {
     const [toggleListNav, setToggleListNav] = useState(false);
@@ -22,7 +21,7 @@ function App() {
         updateTodoItem,
     } = useUpdateData(refresh);
 
-    console.log("App component rendered"); // Add this line
+    // console.log("App component rendered"); // Add this line
 
     if (loading) {
         return <div>Loading...</div>;
