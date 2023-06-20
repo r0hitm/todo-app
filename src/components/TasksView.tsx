@@ -4,7 +4,7 @@
 import { useState } from "react";
 import { List } from "../models/List";
 import { TodoItem } from "../models/TodoItem";
-import EditTaskModal from "./EditTaskModal";
+import { EditTaskModal, AddTaskModal } from "./TaskModals";
 
 export default function TasksView({
     currentList,
@@ -25,6 +25,7 @@ export default function TasksView({
     ) => void;
 }) {
     const [editingTask, setEditingTask] = useState<null | TodoItem>(null);
+    const [addingTask, setAddingTask] = useState<boolean>(false);
 
     return (
         <div className="list-tasks">
@@ -70,45 +71,18 @@ export default function TasksView({
                         closeModal={() => setEditingTask(null)}
                     />
                 )}
-                <div className="add-todo-item">
-                    <h3>Add Todo Item</h3>
-                    <form
-                        className="add-todo-item-form"
-                        onSubmit={e => {
-                            e.preventDefault();
-                            const form = e.target as HTMLFormElement;
-                            const formData = new FormData(form);
-                            const title = formData.get(
-                                "todo-item-title"
-                            ) as string;
-                            const description = formData.get(
-                                "todo-item-description"
-                            ) as string;
-                            const dueDate = formData.get(
-                                "todo-item-due-date"
-                            ) as string;
-                            addTodoItem(title, description, new Date(dueDate));
-                            form.reset();
-                        }}
-                    >
-                        <input
-                            type="text"
-                            name="todo-item-title"
-                            placeholder="Enter Todo Item Title"
-                        />
-                        <input
-                            type="text"
-                            name="todo-item-description"
-                            placeholder="Enter Todo Item Description"
-                        />
-                        <input
-                            type="date"
-                            name="todo-item-due-date"
-                            placeholder="Enter Todo Item Due Date"
-                        />
-                        <button type="submit">Add</button>
-                    </form>
-                </div>
+                {addingTask && (
+                    <AddTaskModal
+                        addTodoItem={addTodoItem}
+                        closeModal={() => setAddingTask(false)}
+                    />
+                )}
+                <button
+                    className="add-task"
+                    onClick={() => setAddingTask(true)}
+                >
+                    <span className="material-symbols-rounded">add</span>
+                </button>
                 <div className="attributions">
                     <a
                         target="_blank"
@@ -120,6 +94,7 @@ export default function TasksView({
                     <a target="_blank" href="https://icons8.com">
                         Icons8
                     </a>
+                    b
                 </div>
             </div>
         </div>
