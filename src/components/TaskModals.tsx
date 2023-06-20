@@ -54,6 +54,7 @@ export function EditTaskModal({
                         name="title"
                         placeholder="Enter Task Title"
                         defaultValue={todo_item.title}
+                        autoFocus
                     />
                     <input
                         type="text"
@@ -127,6 +128,7 @@ export function AddTaskModal({
                         type="text"
                         name="title"
                         placeholder="Enter Task Title"
+                        autoFocus
                     />
                     <input
                         type="text"
