@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { NavLink, Outlet, Form, useLoaderData } from "react-router-dom";
+import { Link, Outlet, Form, useLoaderData } from "react-router-dom";
 import { IrootLoader } from "../loaders";
 
 /**
@@ -15,11 +15,18 @@ export default function Root() {
             <div className={toggleListNav ? "lists-nav" : "lists-nav hidden"}>
                 <nav className="lists">
                     <h3>Lists</h3>
-                    <ul className="list">
+                    <ul className="list-ul">
                         {lists.map(list => (
-                            <NavLink to={`/list/${list.id}`} key={list.id}>
-                                <li>{list.name}</li>
-                            </NavLink>
+                            <li
+                                key={list.id}
+                                className={
+                                    current_list.id === list.id
+                                        ? "list-li active"
+                                        : "list-li"
+                                }
+                            >
+                                <Link to={`/list/${list.id}`}>{list.name}</Link>
+                            </li>
                         ))}
                     </ul>
                 </nav>

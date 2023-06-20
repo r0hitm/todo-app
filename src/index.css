@@ -106,16 +106,24 @@ nav.lists h3 {
   text-align: center;
 }
 
-nav.lists ul {
+.list-ul {
   width: 100%;
   list-style: none;
 }
 
-nav.lists ul li {
+.list-li {
   width: 100%;
   margin-bottom: 1rem;
   padding: 0.5rem;
-  transition: all 0.3s ease-in;
+  user-select: none;
+}
+
+.list-li:hover {
+  background-color: var(--bocchi-pink);
+}
+
+.list-li.active {
+  background-color: var(--bocchi-pink-dark);
 }
 
 .add-list {
