@@ -1,5 +1,6 @@
 /**
- * Logic for a todo list
+ * Model for a List
+ * List of TodoItem objects
  */
 import { TodoItem } from "./TodoItem";
 
@@ -83,5 +84,32 @@ export class List {
      */
     getTodoItem(id: number): TodoItem | undefined {
         return this.#todos.find(todoItem => todoItem.id === id);
+    }
+
+    /**
+     * Serialize the List to JSON
+     * @returns JSON String representation of the List
+     */
+    serialize(): string {
+        return JSON.stringify({
+            id: this.#id,
+            name: this.#name,
+            todos: this.#todos.map(todoItem => todoItem.serialize()),
+        });
+    }
+
+    /**
+     * Deserialize a List from JSON
+     * @param json JSON String representation of the List
+     * @returns A new List object
+     */
+    static deserialize(json: string): List {
+        const obj = JSON.parse(json);
+        const list = new List(obj.name);
+        list.#id = obj.id;
+        list.#todos = obj.todos.map((todoItem: string) =>
+            TodoItem.deserialize(todoItem)
+        );
+        return list;
     }
 }

@@ -1,5 +1,6 @@
 /**
- * Logic for a todo item
+ * Model for a TodoItem
+ * Represents a single todo item in a list
  */
 export class TodoItem {
     #id: number;
@@ -52,5 +53,36 @@ export class TodoItem {
 
     set dueDate(dueDate: Date | null) {
         this.#dueDate = dueDate;
+    }
+
+    /**
+     * Serialize the TodoItem to JSON
+     * @returns JSON String representation of the TodoItem
+     */
+    serialize(): string {
+        return JSON.stringify({
+            id: this.#id,
+            title: this.#title,
+            complete: this.#complete,
+            description: this.#description,
+            dueDate: this.#dueDate,
+        });
+    }
+
+    /**
+     * Deserialize the TodoItem from JSON
+     * @param json JSON String representation of the TodoItem
+     * @returns A TodoItem object
+     */
+    static deserialize(json: string): TodoItem {
+        const data = JSON.parse(json);
+        const todoItem = new TodoItem(
+            data.title,
+            data.description,
+            new Date(data.dueDate)
+        );
+        todoItem.#id = data.id;
+        todoItem.#complete = data.complete;
+        return todoItem;
     }
 }
