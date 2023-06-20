@@ -14,9 +14,7 @@ export default function TasksView({
 }) {
     return (
         <div className="list-tasks">
-            <header>
-                <h1>{currentList.name}</h1>
-            </header>
+            <h1>{currentList.name}</h1>
             <div className="tasks">
                 <div className="list-items">
                     {currentList.todos.map(todo_item => (

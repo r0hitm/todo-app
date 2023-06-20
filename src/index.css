@@ -84,8 +84,80 @@ button:focus-visible {
   text-align: center;
 }
 
+.tasks {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 
+.tasks .list-items {
+  width: 100%;
+}
 
+.list-item {
+  display: flex;
+  width: 100%;
+  min-height: 5rem;
+  align-items: center;
+}
+
+.checkbox {
+  display: flex;
+  place-content: center;
+}
+
+.checkbox input[type="checkbox"] {
+  display: inline-block;
+  width: 1.6rem;
+  height: 1.6rem;
+}
+
+.todo-item {
+  margin-left: 1rem;
+  font-size: 1.2rem;
+}
+
+.todo-item-name {
+  font-weight: bold;
+}
+
+.todo-item-description {
+  font-size: small;
+}
+
+.todo-item-due-date {
+  font-size: small;
+}
+
+.add-todo-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2rem;
+}
+
+.add-todo-item-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.add-todo-item-form input {
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 0.25rem;
+  outline: 1px solid var(--bocchi-pink-dark);
+}
+
+.attributions {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  font-size: 0.8rem;
+}
 
 /* ListSidePanel */
 .lists-view-container {
