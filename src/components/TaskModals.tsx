@@ -139,6 +139,7 @@ export function AddTaskModal({
                         type="date"
                         name="due-date"
                         placeholder="Enter Task Due Date"
+                        defaultValue={new Date().toISOString().substring(0, 10)}
                     />
                     <div className="modal-form-buttons">
                         <button type="submit">Add</button>

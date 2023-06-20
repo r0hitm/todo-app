@@ -51,7 +51,9 @@ export default function TasksView({
                                     {todo_item.description}
                                 </div>
                                 <div className="todo-item-due-date">
-                                    {todo_item.dueDate?.toDateString()}
+                                    {todo_item.dueDate
+                                        ?.toISOString()
+                                        .substring(0, 10)}
                                 </div>
                             </div>
                             <span
