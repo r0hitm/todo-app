@@ -43,7 +43,8 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #f0f0f0; /* Light gray for button background */
+  background-color: var(--bocchi-pink); /* Light gray for button background */
+  color: #fff;
   cursor: pointer;
   transition: border-color 0.25s;
 }
@@ -60,8 +61,18 @@ button:focus-visible {
 .material-symbols-rounded {
   scale: 1.5;
 }
+/* Toggle Button on the top left corner for showing/hiding lists panel */
+.hamburger {
+  position: absolute;
+  display: inline-block;
+  top: 1em;
+  left: 1em;
+  cursor: pointer;
+  z-index: 10;
+  background-color: inherit;
+}
 
-/* Root styles */
+/* TasksView */
 .list-tasks {
   width: 100vw;
   height: 100vh;
@@ -73,20 +84,24 @@ button:focus-visible {
   align-items: center;
 }
 
-.lists-nav {
+
+
+/* ListSidePanel */
+.lists-view-container {
   position: absolute;
   top: 0;
   left: 0;
   height: 100vh;
   width: 100vw;
+  translate: -100%;
   padding: 1em;
   background-color: #d7d6d6;
   overflow-x: hidden;
   transition: all 0.3s ease-in;
 }
 
-.hidden {
-  translate: -100%;
+.show {
+  translate: 0;
 }
 
 nav.lists {
@@ -146,14 +161,4 @@ nav.lists h3 {
   border-radius: 8px;
   margin-left: 0.5rem;
   color: white;
-}
-
-.hamburger {
-  position: absolute;
-  display: inline-block;
-  top: 1em;
-  left: 1em;
-  cursor: pointer;
-  z-index: 10;
-  background-color: inherit;
 }

@@ -40,7 +40,7 @@ function App() {
             >
                 format_list_bulleted
             </span>
-            <div className={toggleListNav ? "lists-nav" : "lists-nav hidden"}>
+            <div className={toggleListNav ? "lists-view-container show" : "lists-view-container"}>
                 <ListsSidePanel
                     lists={data?.lists as List[]}
                     currentList={data?.currentList as List}
