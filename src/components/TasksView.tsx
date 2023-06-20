@@ -1,17 +1,31 @@
 /**
  * Component that shows the contents of the current list
  */
+import { useState } from "react";
 import { List } from "../models/List";
+import { TodoItem } from "../models/TodoItem";
+import EditTaskModal from "./EditTaskModal";
 
 export default function TasksView({
     currentList,
     toggleTodoItem,
     addTodoItem,
+    deleteTodoItem,
+    updateTodoItem,
 }: {
     currentList: List;
     toggleTodoItem: (id: number) => void;
     addTodoItem: (title: string, description: string, dueDate: Date) => void;
+    deleteTodoItem: (id: number) => void;
+    updateTodoItem: (
+        id: number,
+        title: string,
+        description: string,
+        dueDate: Date
+    ) => void;
 }) {
+    const [editingTask, setEditingTask] = useState<null | TodoItem>(null);
+
     return (
         <div className="list-tasks">
             <h1>{currentList.name}</h1>
@@ -39,9 +53,23 @@ export default function TasksView({
                                     {todo_item.dueDate?.toDateString()}
                                 </div>
                             </div>
+                            <span
+                                className="material-symbols-rounded edit-task"
+                                onClick={() => setEditingTask(todo_item)}
+                            >
+                                more_vert
+                            </span>
                         </div>
                     ))}
                 </div>
+                {editingTask && (
+                    <EditTaskModal
+                        todo_item={editingTask}
+                        deleteTodoItem={deleteTodoItem}
+                        updateTodoItem={updateTodoItem}
+                        closeModal={() => setEditingTask(null)}
+                    />
+                )}
                 <div className="add-todo-item">
                     <h3>Add Todo Item</h3>
                     <form

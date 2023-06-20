@@ -114,8 +114,15 @@ button:focus-visible {
 }
 
 .todo-item {
+  width: 100%;
   margin-left: 1rem;
   font-size: 1.2rem;
+}
+
+.material-symbols-rounded.edit-task {
+  scale: 1.5;
+  margin-left: 1rem;
+  cursor: pointer;
 }
 
 .todo-item-name {
@@ -159,6 +166,58 @@ button:focus-visible {
   font-size: 0.8rem;
 }
 
+/* Edit Task Modal */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  /* translate: -100%; */
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  position: relative;
+  width: 80%;
+  padding: 1rem;
+  background-color: #fff;
+  border-radius: 8px;
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-form input {
+  width: 100%;
+  margin-bottom: 1rem;
+  padding: 0.25rem;
+  outline: 1px solid var(--bocchi-pink-dark);
+}
+
+.modal-form-buttons {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-top: 1rem;
+}
+
+
 /* ListSidePanel */
 .lists-view-container {
   position: absolute;
@@ -171,6 +230,7 @@ button:focus-visible {
   background-color: #d7d6d6;
   overflow-x: hidden;
   transition: all 0.3s ease-in;
+  z-index: 2;
 }
 
 .show {

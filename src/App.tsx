@@ -53,6 +53,8 @@ function App() {
                 currentList={data?.currentList as List}
                 toggleTodoItem={toggleTodoItem}
                 addTodoItem={addTodoItem}
+                deleteTodoItem={deleteTodoItem}
+                updateTodoItem={updateTodoItem}
             />
         </>
     );
