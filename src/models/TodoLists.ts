@@ -90,4 +90,31 @@ export class TodoLists {
         }
         list.name = name;
     }
+
+    /**
+     * Serialize
+     * @returns The JSON serialized string of the object
+     */
+    serialize(): string {
+        return JSON.stringify({
+            lists: this.#lists.map(list => list.serialize()),
+            currentListId: this.#currentListId,
+        });
+    }
+
+    /**
+     * Deserialize
+     * @param json The JSON serialized string of the object
+     * @returns The TodoLists object
+     */
+    static deserialize(json: string): TodoLists {
+        const parsed = JSON.parse(json);
+        const lists = parsed.lists.map((list: string) =>
+            List.deserialize(list)
+        );
+        const currentListId = parsed.currentListId;
+        const todo_lists = new TodoLists(lists);
+        todo_lists.currentListId = currentListId;
+        return todo_lists;
+    }
 }

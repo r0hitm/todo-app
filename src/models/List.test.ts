@@ -47,4 +47,23 @@ describe("TodoList", () => {
             expect(testTodoItemInList.title).toBe("New Title");
         }
     });
+
+    it("should serialize the TodoList to JSON", () => {
+        const testTodoList = new List("Test Title");
+        const serializedTodoList = testTodoList.serialize();
+        expect(serializedTodoList).toBe(
+            JSON.stringify({
+                id: testTodoList.id,
+                name: testTodoList.name,
+                todos: testTodoList.todos,
+            })
+        );
+    });
+
+    it("should deserialize the TodoList from JSON", () => {
+        const testTodoList = new List("Test Title");
+        const serializedTodoList = testTodoList.serialize();
+        const deserializedTodoList = List.deserialize(serializedTodoList);
+        expect(deserializedTodoList).toEqual(testTodoList);
+    });
 });

@@ -39,4 +39,38 @@ describe("TodoItem", () => {
         testTodoItem.toggleComplete();
         expect(testTodoItem.complete).toBe(false);
     });
+
+    it("should serialize the TodoItem to JSON", () => {
+        const testTodoItem = new TodoItem(
+            "Test Title",
+            "Test Description",
+            new Date()
+        );
+        const serializedTodoItem = testTodoItem.serialize();
+        expect(serializedTodoItem).toBe(
+            JSON.stringify({
+                id: testTodoItem.id,
+                title: testTodoItem.title,
+                complete: testTodoItem.complete,
+                description: testTodoItem.description,
+                dueDate: testTodoItem.dueDate,
+            })
+        );
+    });
+
+    it("should deserialize the TodoItem from JSON", () => {
+        const testTodoItem = new TodoItem(
+            "Test Title",
+            "Test Description",
+            new Date()
+        );
+        const serializedTodoItem = testTodoItem.serialize();
+        const deserializedTodoItem = TodoItem.deserialize(serializedTodoItem);
+        expect(deserializedTodoItem).toBeInstanceOf(TodoItem);
+        expect(deserializedTodoItem.id).toBe(testTodoItem.id);
+        expect(deserializedTodoItem.title).toBe(testTodoItem.title);
+        expect(deserializedTodoItem.complete).toBe(testTodoItem.complete);
+        expect(deserializedTodoItem.description).toBe(testTodoItem.description);
+        expect(deserializedTodoItem.dueDate).toStrictEqual(testTodoItem.dueDate);
+    });
 });
