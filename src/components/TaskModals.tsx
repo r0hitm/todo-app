@@ -73,7 +73,13 @@ export function EditTaskModal({
                         <button
                             type="button"
                             onClick={() => {
-                                deleteTodoItem(todo_item.id);
+                                if (
+                                    confirm(
+                                        "Are you sure you want to delete this task?"
+                                    )
+                                ) {
+                                    deleteTodoItem(todo_item.id);
+                                }
                                 closeModal();
                             }}
                         >
