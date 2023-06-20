@@ -29,7 +29,7 @@ function App() {
     }
 
     return (
-        <>
+        <div className="anch">
             <span
                 className="material-symbols-rounded hamburger"
                 onClick={() => {
@@ -58,7 +58,7 @@ function App() {
                 deleteTodoItem={deleteTodoItem}
                 updateTodoItem={updateTodoItem}
             />
-        </>
+        </div>
     );
 }
 

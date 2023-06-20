@@ -84,6 +84,10 @@ export default function ListsSidePanel({
                         const form = e.target as HTMLFormElement;
                         const formData = new FormData(form);
                         const listName = formData.get("list-name") as string;
+                        if (listName === "") {
+                            form.reset();
+                            return;
+                        }
                         addList(listName);
                         form.reset();
                     }}
@@ -97,7 +101,7 @@ export default function ListsSidePanel({
                 </form>
             </div>
             {renamingList && (
-                <ListModal
+                <ListRenameModal
                     list={renamingList}
                     renameList={renameList}
                     closeModal={() => setRenamingList(null)}
@@ -111,7 +115,7 @@ export default function ListsSidePanel({
  * List Modal component
  * Used to rename an existing list
  */
-function ListModal({
+function ListRenameModal({
     list,
     renameList,
     closeModal,
