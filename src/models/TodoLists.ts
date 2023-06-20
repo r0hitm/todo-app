@@ -36,7 +36,6 @@ export class TodoLists {
 
     set currentListId(id: number) {
         console.log({ id, lists: this.#lists });
-        this.#lists.forEach(list => console.log(list));
 
         if (!this.#lists.some(list => list.id === id)) {
             throw new Error(`List with ID ${id} does not exist`);

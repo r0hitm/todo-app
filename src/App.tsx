@@ -1,11 +1,29 @@
-import { useState, useEffect } from "react";
-import { get_lists, get_current_list } from "./storage";
+import { useState } from "react";
+import useFetchData from "./hooks/useFetchData";
+import useUpdateData from "./hooks/useUpdateData";
 
 // import "./App.css";
 
 function App() {
     const [toggleListNav, setToggleListNav] = useState(false);
 
+    const { data, loading, refresh } = useFetchData();
+    const {
+        addList,
+        deleteList,
+        renameList,
+        changeList,
+        addTodoItem,
+        deleteTodoItem,
+        toggleTodoItem,
+        updateTodoItem,
+    } = useUpdateData(refresh);
+
+    console.log("App component rendered"); // Add this line
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <>
@@ -13,16 +31,21 @@ function App() {
                 <nav className="lists">
                     <h3>Lists</h3>
                     <ul className="list-ul">
-                        {lists.map(list => (
+                        {data?.lists.map(list => (
                             <li
                                 key={list.id}
                                 className={
-                                    current_list.id === list.id
+                                    data.currentList.id === list.id
                                         ? "list-li active"
                                         : "list-li"
                                 }
+                                onClick={() => {
+                                    console.log("changing list to: ", list.id);
+                                    changeList(list.id);
+                                    setToggleListNav(false);
+                                }}
                             >
-                                <Link to={`/list/${list.id}`}>{list.name}</Link>
+                                {list.name}
                             </li>
                         ))}
                     </ul>
@@ -30,7 +53,7 @@ function App() {
                 <div className="add-list">
                     {/* <NavLink to="/list/new">Add List</NavLink> */}
                     <h3>Add List</h3>
-                    <Form
+                    <form
                         className="add-list-form"
                         // TODO
                     >
@@ -40,7 +63,7 @@ function App() {
                             placeholder="Enter List Name"
                         />
                         <button type="submit">Add</button>
-                    </Form>
+                    </form>
                 </div>
             </div>
             <div className="list-tasks">
@@ -67,10 +90,9 @@ function App() {
                     >
                         format_list_bulleted
                     </span>
-                    <h1>{current_list.name}</h1>
+                    <h1>{data?.currentList.name}</h1>
                     {/* <span>Edit</span> */}
                 </header>
-                <Outlet />
                 <div className="attributions">
                     <a
                         target="_blank"

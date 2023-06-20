@@ -23,6 +23,7 @@ const set = async (todo_lists: TodoLists) => {
  * @returns The TodoLists object
  */
 export async function getData(): Promise<TodoLists> {
+    // localForage.clear();
     const data = await localForage.getItem<string>(STORAGE_KEY);
     if (data) {
         return TodoLists.deserialize(data);
