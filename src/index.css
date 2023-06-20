@@ -154,4 +154,6 @@ nav.lists h3 {
   top: 1em;
   left: 1em;
   cursor: pointer;
+  z-index: 10;
+  background-color: inherit;
 }
