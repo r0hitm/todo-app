@@ -8,6 +8,7 @@ import ListsSidePanel from "./components/ListsSidePanel";
 import TasksView from "./components/TasksView";
 
 import { List } from "./models/List";
+import { redirect } from "react-router-dom";
 
 function App() {
     const [toggleListNav, setToggleListNav] = useState(false);
