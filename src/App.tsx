@@ -1,11 +1,13 @@
 import { useState } from "react";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./firebase";
+
 import useFetchData from "./hooks/useFetchData";
 import useUpdateData from "./hooks/useUpdateData";
 import ListsSidePanel from "./components/ListsSidePanel";
 import TasksView from "./components/TasksView";
 
 import { List } from "./models/List";
-// import "./App.css";
 
 function App() {
     const [toggleListNav, setToggleListNav] = useState(false);
@@ -21,6 +23,15 @@ function App() {
         toggleTodoItem,
         updateTodoItem,
     } = useUpdateData(refresh);
+
+    onAuthStateChanged(auth, user => {
+        if (user) {
+            const uid = user.uid;
+            console.log("User is signed in");
+        } else {
+            console.log("User is signed out");
+        }
+    });
 
     console.log("App component rendered"); // Add this line
 
@@ -66,8 +77,7 @@ function App() {
             />
             <div className="attributions">
                 <p>
-                    Made by{" "}
-                    <a href="https://github.com/r0hitm">Rohit Mehta</a>
+                    Made by <a href="https://github.com/r0hitm">Rohit Mehta</a>
                 </p>
                 <p>
                     View on{" "}
