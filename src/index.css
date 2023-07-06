@@ -66,7 +66,7 @@ button:focus-visible {
     user-select: none;
 }
 
-.material-symbols-rounded.hamburger {
+.material-symbols-rounded.hamburger, .material-symbols-rounded.logout, .material-symbols-rounded.edit-task, .material-symbols-rounded.add-task, .material-symbols-rounded.close-modal {
     scale: 1.5;
 }
 /* Toggle Button on the top left corner for showing/hiding lists panel */
@@ -75,6 +75,16 @@ button:focus-visible {
     display: inline-block;
     top: 1em;
     left: 1em;
+    cursor: pointer;
+    z-index: 3;
+    background-color: inherit;
+}
+
+.logout {
+    position: absolute;
+    display: inline-block;
+    top: 1em;
+    right: 1em;
     cursor: pointer;
     z-index: 3;
     background-color: inherit;
@@ -331,6 +341,10 @@ nav.lists h3 {
     color: white;
 }
 
+.welcome {
+    padding: 1rem;
+}
+
 /* Desktop layout styles for non-mobile devices */
 @media screen and (min-width: 1024px) {
     .anch {
@@ -355,4 +369,39 @@ nav.lists h3 {
     .tasks .list-items {
         max-width: 800px;
     }
+}
+
+/* Sign In Component */
+.login-form-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 80%;
+    max-width: 480px;
+    padding: 1rem;
+    border: 1px solid var(--bocchi-pink-dark);
+    border-radius: 8px;
+}
+
+.login-form label {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.login-form input {
+    width: 80%;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    border-radius: 8px;
+    font-size: 1rem;
 }
