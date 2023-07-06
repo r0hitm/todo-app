@@ -66,7 +66,7 @@ button:focus-visible {
     user-select: none;
 }
 
-.material-symbols-rounded.hamburger {
+.material-symbols-rounded.hamburger, .material-symbols-rounded.logout, .material-symbols-rounded.edit-task, .material-symbols-rounded.add-task, .material-symbols-rounded.close-modal {
     scale: 1.5;
 }
 /* Toggle Button on the top left corner for showing/hiding lists panel */
@@ -75,6 +75,16 @@ button:focus-visible {
     display: inline-block;
     top: 1em;
     left: 1em;
+    cursor: pointer;
+    z-index: 3;
+    background-color: inherit;
+}
+
+.logout {
+    position: absolute;
+    display: inline-block;
+    top: 1em;
+    right: 1em;
     cursor: pointer;
     z-index: 3;
     background-color: inherit;

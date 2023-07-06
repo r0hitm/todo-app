@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useContext } from "react";
 import AuthContext from "./AuthContext";
+import { signOutUser } from "./firebase";
 
 import useFetchData from "./hooks/useFetchData";
 import useUpdateData from "./hooks/useUpdateData";
@@ -45,6 +46,12 @@ function App() {
                 }}
             >
                 format_list_bulleted
+            </span>
+            <span
+                className="material-symbols-rounded logout"
+                onClick={signOutUser}
+            >
+                logout
             </span>
             <div
                 className={
