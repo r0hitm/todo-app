@@ -331,6 +331,10 @@ nav.lists h3 {
     color: white;
 }
 
+.welcome {
+    padding: 1rem;
+}
+
 /* Desktop layout styles for non-mobile devices */
 @media screen and (min-width: 1024px) {
     .anch {

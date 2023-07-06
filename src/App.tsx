@@ -1,13 +1,17 @@
 import { useState } from "react";
+import { useContext } from "react";
+import AuthContext from "./AuthContext";
 
 import useFetchData from "./hooks/useFetchData";
 import useUpdateData from "./hooks/useUpdateData";
 import ListsSidePanel from "./components/ListsSidePanel";
 import TasksView from "./components/TasksView";
+import Welcome from "./components/Welcome";
 
 import { List } from "./models/List";
 
 function App() {
+    const user = useContext(AuthContext);
     const [toggleListNav, setToggleListNav] = useState(false);
 
     const { data, loading, refresh } = useFetchData();
@@ -21,6 +25,10 @@ function App() {
         toggleTodoItem,
         updateTodoItem,
     } = useUpdateData(refresh);
+
+    if (!user) {
+        return <Welcome />;
+    }
 
     if (loading) {
         return <div>Loading...</div>;
