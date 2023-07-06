@@ -7,8 +7,8 @@ The primary objective of this project is to provide a practical learning experie
 Notable features and learning points of this project include:
 
 - Implementation of ES6 modules and classes.
-- Utilization of Vite as the bundling tool.
-- Implementation of React for the UI. (new)
+- Utilization of Vite as the bundling tool. (new)
+- Using React. (new)
 - Integration of TypeScript for code reliability and maintainability. (new)
 - Incorporation of Firebase for user authentication and data storage. (new)
 
