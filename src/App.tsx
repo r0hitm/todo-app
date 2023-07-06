@@ -50,6 +50,7 @@ function App() {
             <span
                 className="material-symbols-rounded logout"
                 onClick={signOutUser}
+                title="Sign Out"
             >
                 logout
             </span>
