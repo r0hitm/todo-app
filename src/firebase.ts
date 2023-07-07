@@ -3,12 +3,12 @@
  */
 import { initializeApp } from "firebase/app";
 import {
-    // UserCredential, // For Type Checking
     getAuth,
     signOut,
     signInWithPopup,
     GoogleAuthProvider,
 } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
     apiKey: "AIzaSyDVUI7WRSc-mfdFvYQ2QwflBuJpVOX4z9w",
@@ -21,6 +21,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getFirestore(app);
 
 /**
  * Sign in a user with Google.
@@ -38,4 +39,4 @@ const signOutUser = () => {
     return signOut(auth);
 };
 
-export { auth, signInWithGoogle, signOutUser };
+export { auth, db, signInWithGoogle, signOutUser };
