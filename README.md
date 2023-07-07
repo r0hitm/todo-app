@@ -6,18 +6,22 @@ The primary objective of this project is to provide a practical learning experie
 
 Notable features and learning points of this project include:
 
-<<<<<<< HEAD
--   Implementation of ES6 modules and classes.
--   Utilization of Vite as the bundling tool.
--   Implementation of React for the UI. (new)
--   Integration of TypeScript for code reliability and maintainability. (new)
--   Implementation of vitest for testing. (new)
-=======
-- Implementation of ES6 modules and classes.
-- Utilization of Vite as the bundling tool. (new)
-- Using React. (new)
+- Implementation of ES6 modules and classes
+    - Refactored and tested models for ToDo items and lists (new)
+
+- Using React
+    - Context API for state management (new)
+    - Implemented three custom hooks (new)
+
 - Integration of TypeScript for code reliability and maintainability. (new)
-- Incorporation of Firebase for user authentication and data storage. (new)
->>>>>>> dev
+    - (PS: I don't think I'll ever go back to JavaScript ;)
+- Incorporation of Firebase for user authentication and data storage to sync user data (new)
+    - Setup Firebase project and configured authentication and database
+    - Implemented authentication with Google
+    - Implemented firestore (cloud database) to store user data
+    - Implemented Firebase security rules to restrict access to user data
+- Utilization of Vite as the bundling tool (vite has better DX and is faster than webpack)
+- Unit testing of models with vitest (new)
+
 
 &copy; 2023 [Rohit Mehta](https://github.com/r0hitm)
