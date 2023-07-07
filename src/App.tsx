@@ -49,7 +49,10 @@ function App() {
             </span>
             <span
                 className="material-symbols-rounded logout"
-                onClick={signOutUser}
+                onClick={() => {
+                    if (confirm("Log Out?"))
+                        signOutUser();
+                }}
                 title="Sign Out"
             >
                 logout
