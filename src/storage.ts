@@ -1,30 +1,40 @@
 /**
- * @module storage
- * @description This module contains the logic for storing and retrieving data from the browser's local storage.
+ * This module contains the logic for storing and retrieving data from the browser's local storage.
  * Uses localForage package. This will be later replaced with firebase storage.
  */
-import localForage from "localforage";
+// import localForage from "localforage"; // remove this line
+import { doc, getDoc, setDoc } from "firebase/firestore";
+import { auth, db } from "./firebase";
 import { TodoLists } from "./models/TodoLists";
 import { List } from "./models/List";
 
-const STORAGE_KEY = "todo-lists";
-
 // Helper functions:
 /**
- * A helper function to set the data in the local storage.
+ * Save to the firestore
  */
 const set = async (todo_lists: TodoLists) => {
-    return localForage.setItem(STORAGE_KEY, todo_lists.serialize());
+    const UID = auth.currentUser?.uid;
+    if (UID) {
+        const data = {
+            data: todo_lists.serialize(),
+        };
+        await setDoc(doc(db, "userData", UID), data);
+    }
 };
 
-// Main functions:
 /**
- * Retrieve the data from the local storage or create a new TodoList object if no data is found.
+ * Retrieve the data
  * @returns The TodoLists object
  */
 export async function getData(): Promise<TodoLists> {
-    // localForage.clear();
-    const data = await localForage.getItem<string>(STORAGE_KEY);
+    const UID = auth.currentUser?.uid;
+    if (!UID) {
+        throw new Error("User not logged in");
+    }
+    const docSnap = await getDoc(doc(db, "userData", UID));
+    const data = docSnap.data()?.data;
+    console.log("Data: ", data);
+
     if (data) {
         return TodoLists.deserialize(data);
     } else {

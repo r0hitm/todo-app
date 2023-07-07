@@ -1,21 +1,24 @@
 import { useState, useEffect } from "react";
+import { User } from "firebase/auth";
 import { getData } from "../storage";
 import { TodoLists } from "../models/TodoLists";
 
-export default function useFetchData() {
+export default function useFetchData(user: User | null) {
     const [data, setData] = useState<null | TodoLists>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [refreshCount, setRefreshCount] = useState<number>(0);
 
     useEffect(() => {
         async function fetchData() {
-            const data = await getData();
-            setData(data);
-            setLoading(false);
+            if (user) {
+                const data = await getData();
+                setData(data);
+                setLoading(false);
+            }
         }
 
         fetchData();
-    }, [refreshCount]);
+    }, [refreshCount, user]);
 
     const refresh = () => {
         setRefreshCount(refreshCount + 1);

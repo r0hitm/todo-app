@@ -15,7 +15,7 @@ function App() {
     const user = useContext(AuthContext);
     const [toggleListNav, setToggleListNav] = useState(false);
 
-    const { data, loading, refresh } = useFetchData();
+    const { data, loading, refresh } = useFetchData(user);
     const {
         addList,
         deleteList,
